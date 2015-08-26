@@ -272,7 +272,27 @@ static const struct spi_imx_master mx6q_spi5_data __initconst = {
         .num_chipselect = ARRAY_SIZE(mx6q_spi5_cs),
 };
 static struct spi_board_info imx6_spi5_device[] __initdata = {
-	//add slave device
+		    {
+                .modalias       = "spidev",
+                .max_speed_hz   = 125000 * 16,
+                .bus_num        = 4,
+                .chip_select    = 0,
+             	.mode 			= SPI_MODE_0,
+        },
+               {
+                .modalias       = "spidev",
+                .max_speed_hz   = 125000 * 16,
+                .bus_num        = 4,
+                .chip_select    = 1,
+             	.mode 			= SPI_MODE_0,
+        },
+               {
+                .modalias       = "spidev",
+                .max_speed_hz   = 125000 * 16,
+                .bus_num        = 4,
+                .chip_select    = 2,
+             	.mode 			= SPI_MODE_0,
+        },//add slave device
 };
 static void spi_device_init(void)
 {
@@ -365,7 +385,7 @@ static struct i2c_board_info mxc_i2c1_board_info[] __initdata = {
 		I2C_BOARD_INFO("ds1338", 0x68),
 	},
  	{
-        I2C_BOARD_INFO("mxc_hdmi_i2c", 0x50),
+    I2C_BOARD_INFO("mxc_hdmi_i2c", 0x50),
     },
  
 };
@@ -573,8 +593,8 @@ static struct fsl_mxc_hdmi_platform_data hdmi_data = {
 };
 
 static struct fsl_mxc_hdmi_core_platform_data hdmi_core_data = {
-	.ipu_id = 1,
-	.disp_id = 1,
+	.ipu_id = 0,
+	.disp_id = 0,
 };
 
 static struct fsl_mxc_lcd_platform_data lcdif_data = {
@@ -1045,6 +1065,14 @@ static void imx6_matrix_keypad_init(void)
 }
 
 
+static struct mipi_csi2_platform_data mipi_csi2_pdata = {
+	.ipu_id	 = 0,
+	.csi_id = 1,
+	.v_channel = 0,
+	.lanes = 2,
+	.dphy_clk = "mipi_pllref_clk",
+	.pixel_clk = "emi_clk",
+};
 /*!
  * Board specific initialization.
  */
@@ -1063,7 +1091,7 @@ static void __init mx6_board_init(void)
 	soc_reg_id = dvfscore_data.soc_id;
 	mx6q_init_uart();
 	imx6x_add_ram_console();
-    mxc_register_device(&mxc_bt_rfkill, &mxc_bt_rfkill_data);
+  mxc_register_device(&mxc_bt_rfkill, &mxc_bt_rfkill_data);
 	/*
 	 * MX6DL/Solo only supports single IPU
 	 * The following codes are used to change ipu id
@@ -1102,6 +1130,7 @@ static void __init mx6_board_init(void)
 	}
 
 	imx6q_add_v4l2_capture(0, &capture_data[0]);
+	imx6q_add_mipi_csi2(&mipi_csi2_pdata); 
 
 	imx6q_add_device_gpio_leds();
 
