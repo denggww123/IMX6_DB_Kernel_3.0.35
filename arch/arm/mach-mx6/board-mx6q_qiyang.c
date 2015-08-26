@@ -1047,6 +1047,7 @@ static struct matrix_keypad_platform_data imx_sabresd_keypad_platform_data = {
 	.debounce_ms       = 5,
 	.col_scan_delay_us = 2,
 };
+
 static struct platform_device imx_sabresd_keyboard = {
 	.name  = "matrix-keypad",
 	.id    = -1,
@@ -1064,7 +1065,6 @@ static void imx6_matrix_keypad_init(void)
 	}
 }
 
-
 static struct mipi_csi2_platform_data mipi_csi2_pdata = {
 	.ipu_id	 = 0,
 	.csi_id = 1,
@@ -1073,6 +1073,7 @@ static struct mipi_csi2_platform_data mipi_csi2_pdata = {
 	.dphy_clk = "mipi_pllref_clk",
 	.pixel_clk = "emi_clk",
 };
+
 /*!
  * Board specific initialization.
  */
